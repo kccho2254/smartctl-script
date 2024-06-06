@@ -6,7 +6,8 @@ display_menu() {
     echo "1. Short self-test"
     echo "2. Long self-test"
     echo "3. Conveyance self-test"
-    echo "4. Show current attributes"
+    echo "4. Current attributes"
+    echo "5. nvme-cli attributes"
     echo "Enter your choice (1-3):"
 }
 
@@ -23,8 +24,13 @@ handle_input() {
             run_conveyance_test "$drive_label"
             ;;
         4)
-	    smartctl -a /dev/"$drive_label"
-	    exit
+            sudo smartctl -a /dev/"$drive_label"
+            exit
+            ;;
+        5)
+            echo "Try sudo nvme help..."
+            sudo nvme smart-log /dev/"$drive_label"
+            exit
             ;;
         *)
             echo "Invalid choice. Please try again."
