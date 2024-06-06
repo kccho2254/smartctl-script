@@ -6,6 +6,7 @@ display_menu() {
     echo "1. Short self-test"
     echo "2. Long self-test"
     echo "3. Conveyance self-test"
+    echo "4. Show current attributes"
     echo "Enter your choice (1-3):"
 }
 
@@ -20,6 +21,10 @@ handle_input() {
             ;;
         3)
             run_conveyance_test "$drive_label"
+            ;;
+        4)
+	    smartctl -a /dev/"$drive_label"
+	    exit
             ;;
         *)
             echo "Invalid choice. Please try again."
@@ -74,6 +79,11 @@ show_progress() {
     done
 }
 
+display_results() {
+        echo "S.M.A.R.T. TEST COMPLETE!!! for /dev/$drive_label:"
+        smartctl -i -A -l selftest /dev/"$drive_label"
+}
+
 
 # Main script
 if [ -z "$1" ]; then
@@ -84,7 +94,4 @@ fi
 drive_label="$1"
 display_menu
 handle_input
-
-# Display the test results
-echo "S.M.A.R.T. TEST COMPLETE!!! for /dev/$drive_label:"
-smartctl -i -A -l selftest /dev/"$1"
+display_results
