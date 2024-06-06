@@ -103,7 +103,8 @@ fi
 drive_id=$(lsblk -no NAME,TYPE | grep -E "^$1\s+(disk|part)$")
 if [ -z "$drive_id" ]; then
     echo "Error: Drive label '$1' not found."
-    echo "Available devices and partitions:"
+    echo "Usage: $0 /dev/<drive_label>"
+    echo "Available devices:"
     lsblk
     exit 1
 fi
