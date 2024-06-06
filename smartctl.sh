@@ -85,9 +85,20 @@ display_results() {
 }
 
 
-# Main script
+# Check if an argument is provided
 if [ -z "$1" ]; then
     echo "Usage: $0 /dev/<drive_label>"
+    echo "Available devices:"
+    lsblk
+    exit 1
+fi
+
+# Check if the drive label exists
+drive_id=$(lsblk -no NAME,TYPE | grep -E "^$1\s+(disk|part)$")
+if [ -z "$drive_id" ]; then
+    echo "Error: Drive label '$1' not found."
+    echo "Available devices and partitions:"
+    lsblk
     exit 1
 fi
 
